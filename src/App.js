@@ -47,7 +47,15 @@ class App extends Component {
       imageURL: '',
       box: '',
       route: 'signin',
-      isSignedIn: false
+      isSignedIn: false,
+      user: {
+        id: '',
+        name: '',
+        email: '',
+        password: '',
+        entries: 0,
+        joined: ''
+      }
     }
   }
 
@@ -57,6 +65,16 @@ componentDidMount() {
     .then(data => console.log(data))
 }
 
+loadUser = (data) => {
+  this.setState({user: {
+    id: data.id,
+    name: data.name,
+    email: data.email,
+    password: data.password,
+    entries: data.entries,
+    joined: data.joined
+  }})
+}
 
   calculateFaceLocation = (data) => {
     const clarifaiFace = data.outputs[0].data.regions[0].region_info.bounding_box;
@@ -120,7 +138,7 @@ componentDidMount() {
           : (
                 route === 'signin' 
               ? <Signin onRouteChange={this.onRouteChange}/>
-              : <Register onRouteChange={this.onRouteChange}/>
+              : <Register loadUser={this.loadUser} onRouteChange={this.onRouteChange}/>
             )
         }  
       </div>
